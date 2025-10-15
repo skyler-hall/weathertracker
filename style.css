@@ -1,0 +1,156 @@
+/* Universal Selector */
+* {
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* element selectors */
+body {
+    margin: 1rem 2rem;
+}
+
+/* class selectors */
+.site-header {
+    padding: 1rem 0 1rem 1rem; /* unit types */
+    margin: 2rem 0;  /* we're working in multiples of 16 */
+}
+
+.header-title { /* basic attributes, values, basic syntax */
+    color: deepskyblue;
+    font-size: 4rem;
+    padding-bottom: 15px;
+}
+
+.header-text {
+    font-size: 1.2rem;
+}
+
+/* selecting specific elements with a combination of selectors */
+.main-container div {
+    margin: 0rem 1rem;
+}
+
+.location-label {
+    font-weight: bold;
+}
+
+.location-input {
+    width: 200px;
+    padding: 6px 12px;
+    margin: 4px;
+    border-radius: 1.5rem;
+}
+
+.date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1rem 0rem;
+}
+
+/* flex box and grids */
+.forecast-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 2rem;
+    background-color: #90d5ff;
+        box-shadow: 5px 5px 10px #888888;
+}
+
+img {
+    width: 600px;
+
+    border: none;
+    border-radius: 1rem;
+}
+
+.forecast-info h3 {
+    color: #003859;
+    font-size: 2rem;
+
+    margin-bottom: 0.5rem;
+}
+
+.forecast-info {
+    width: 100%;
+}
+
+.forecast-info ul {
+    padding: 0;
+}
+
+.forecast-detail {
+    width: 100%;
+    height: auto;
+    font-size: 1.2rem;
+    background-color: #e6f4f1;
+
+    border-radius: 0.5rem;
+    list-style-type: none;
+
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    box-shadow: 5px 5px 10px #888888;
+}
+
+.forecast-detail h4 {
+    font-weight: bold;
+}
+
+.forecast-detail span {
+    font-weight: lighter;
+}
+
+.forecast-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem;
+}
+
+/* giving multiple different selectors the same attributes */
+.forecast-controls button, .weather-button {
+    font-size: 1.2rem;
+    background-color: #003859;
+    color: white;
+
+    border: none;
+    padding: 10px 16px;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+.weather-button {
+    display: block;
+    margin: auto auto;
+}
+
+footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: solid 2px black;
+}
+
+footer ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    list-style-type: none;
+}
+
+/* animations and pseduo-classes */
+a {
+    text-decoration: none;
+    transition: color ease-in-out 0.2s;
+}
+
+a:hover {
+    color: deepskyblue;
+}
+
+

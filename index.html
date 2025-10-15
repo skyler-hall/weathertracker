@@ -3,18 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet"/>
     <title>Weather Tracker</title>
 </head>
 <body>
-    <header>
-        <h1>Weather Tracker</h1>
+    <header class="site-header">
+        <h1 class="header-title">Weather Tracker</h1>
+        <p class="header-text">Whether you're watching the weather or want a warning on the warm and windy, you're welcome to witness it here!</p>
     </header>
-    <p>date: <span id="date"></span></p>
-    <input type="text" placeholder="Enter city name or zip code">
-
-    <button>Get Weather</button>
+    <section class="main-container">
+        <div>
+            <label for="" class="location-label">City/Zip Code:</label>
+            <input type="text" placeholder="Enter city name or zip code" class="location-input">
+            <p class="date">Date: Oct. 16th, 2025<span id="date"></span></p>
+        </div>
+        <div class="forecast-container">
+            <img src="https://clarksvillenow.com/wp-content/blogs.dir/43/files/2023/09/Mostly-sunny-1200-2023-1200x768.jpg" alt=""/>
+            <div class="forecast-info">
+                <h3>Forecast</h3>
+                <ul>
+                    <li class="forecast-detail">
+                        <div>
+                            <h4>Weather</h4> <!--Will be changed using API data-->
+                            <span id="weather-detail"> Sunny</span>
+                        </div>
+                    </li>
+                    <li class="forecast-detail">
+                        <div>
+                            <h4>Average Temperature</h4>
+                            <span id="temp-detail">85F</span>
+                        </div>
+                    </li>
+                    <li class="forecast-detail">
+                        <div>
+                            <h4>Humidity</h4>
+                            <span id="humidity-detail">20%</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="forecast-controls">
+            <button>Previous Day</button>
+            <button>Next Day</button>
+        </div>
+    </section>
+    <button class="weather-button">Get Weather</button>
     <footer>
-        <p>&copy; 2024 Weather Tracker</p>
+        <ul>
+            <li>
+                <p>&copy; 2024 Weather Tracker</p>
+            </li>
+            <li><a href="https://www.linkedin.com/in/skylerhalll/?trk=public_post_feed-actor-name">LinkedIn</a></li>
+            <li><a href="https://github.com/skyler-hall">GitHub</a></li>
+        </ul>
     </footer>
 </body>
 </html>
