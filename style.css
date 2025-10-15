@@ -16,7 +16,7 @@ body {
 }
 
 .header-title { /* basic attributes, values, basic syntax */
-    color: deepskyblue;
+    color: #003859;
     font-size: 4rem;
     padding-bottom: 15px;
 }
