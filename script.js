@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.getElementById('prev-button')
     prevButton.addEventListener('click', () => handlePrev())
 
-    requestNotificationPermission()
+    requestNotificationPermission() //ask the user if we can send notifications 
 })
 
 const getForecast = (location) => {
@@ -89,6 +89,8 @@ const getForecast = (location) => {
 
     let notificationText = ""
 
+    //to not spam users with notifs, we'll loop through the forecast data we retrieved
+    //and make a list of all the sunny days
     selectedForecast.forEach(day => {
         console.log('day', day)
         if(day.weather.toLowerCase() === "sunny") {
@@ -96,8 +98,8 @@ const getForecast = (location) => {
         }
     });
 
-    console.log('notifi text',notificationText)
-    if(notificationText) {
+    console.log('notification text:', notificationText)
+    if(notificationText) { // if the list of sunny days isn't empty, we'll send a notif
         createNotification(notificationText)
     }
 
@@ -127,6 +129,7 @@ const handleSubmit = () => {
     displayMockForecast(forecast, 1)
 }
 
+// just moves through the forecast array
 const handleNext = () => {
     day += 1
     displayMockForecast(forecastData, day)
@@ -142,25 +145,22 @@ const handlePrev = () => {
 
 //request permission to send notifications
 function requestNotificationPermission() {
-    if (!("Notification" in window)) {
+    if (!("Notification" in window)) { // it's actually a bit hard to check whether a browser supports notifs
+        //so this is failsafe code
         console.log("This browser does not support notifications.");
         return;
     }
     
+    //request notification permissions and print out the user's response to the console
     Notification.requestPermission().then((result) => {
       console.log(result);
     });
 }
 
+// create a notif
 function createNotification(text) {
-    const img = "sunny.jpg";
-    console.log('creating notifi')
-    // const text = `${date}: Weather is "${weather}."`;
-    const notification = new Notification("Weather Alert", { body: text, icon: img });
-}
-
-function sendNotification(weather) {
     if(Notification?.permission === "granted") {
-        createNotification(weather)
+        const img = "sunny.jpg";
+        const notification = new Notification("Weather Alert", { body: text, icon: img });
     }
 }
