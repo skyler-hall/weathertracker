@@ -34,7 +34,7 @@ const mockForecast = {
         },
         {
             date: "Oct 17th, 2025",
-            weather: "Snow?",
+            weather: "Snowy",
             temp: "40F",
             humidity: "10%"
         }
@@ -112,6 +112,7 @@ const displayMockForecast = (forecast, index) => {
     const weather = document.getElementById('weather-detail')
     const temp = document.getElementById('temp-detail')
     const humidity = document.getElementById('humidity-detail')
+    const forecastImage = document.getElementById('forecast-img')
 
     console.log(index)
     const currForecast = forecast[index]
@@ -119,6 +120,7 @@ const displayMockForecast = (forecast, index) => {
     weather.innerText = currForecast?.weather ?? "-"
     temp.innerText = currForecast?.temp ?? "-"
     humidity.innerText = currForecast?.humidity ?? "-"
+    forecastImage.src = `${currForecast?.weather.toLowerCase() ?? "sunny"}.jpg`
 }
 
 const handleSubmit = () => {
