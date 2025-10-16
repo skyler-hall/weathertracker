@@ -10,18 +10,23 @@
     <header class="site-header">
         <h1 class="header-title">Weather Tracker</h1>
         <p class="header-text">Whether you're watching the weather or want a warning on the warm and windy, you're welcome to witness it here!</p>
-    </header>
-    <section class="main-container">
-        <div>
+        <div class="location-container">
             <label for="" class="location-label">City/Zip Code:</label>
             <input type="text" placeholder="Enter city name or zip code" class="location-input">
-            <p class="date">Date: Oct. 16th, 2025<span id="date"></span></p>
         </div>
+    </header>
+    <section class="main-container">
         <div class="forecast-container">
             <img src="https://clarksvillenow.com/wp-content/blogs.dir/43/files/2023/09/Mostly-sunny-1200-2023-1200x768.jpg" alt=""/>
             <div class="forecast-info">
                 <h3>Forecast</h3>
                 <ul>
+                    <li class="forecast-detail">
+                        <div>
+                            <h4>Date</h4>
+                            <span id="date">Oct 16th, 2025</span>
+                        </div>
+                    </li>
                     <li class="forecast-detail">
                         <div>
                             <h4>Weather</h4> <!--Will be changed using API data-->
@@ -45,10 +50,10 @@
         </div>
         <div class="forecast-controls">
             <button>Previous Day</button>
+            <button class="weather-button">Get Weather</button>
             <button>Next Day</button>
         </div>
     </section>
-    <button class="weather-button">Get Weather</button>
     <footer>
         <ul>
             <li>
