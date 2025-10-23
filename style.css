@@ -1,102 +1,129 @@
 /* Universal Selector */
+/* TODO */
 * {
-    margin: 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    margin: 0;
 }
 
 /* element selectors */
+/* TODO */
 body {
-    margin: 1rem 4rem;
     background-color: #FAF9F6;
+
+    margin: 1rem 4rem; /* top bottom, left right */
 }
 
 /* class selectors */
+/* TODO */
 .site-header {
     text-align: center;
-    padding: 1rem 0 1rem 1rem; /* unit types */
+
+    padding: 1rem 0 1rem 1rem; /* top right bottom left - unit types */
     margin: 2rem 0;  /* we're working in multiples of 16 */
 
     border: 5px solid #579ec6;
     border-radius: 1rem;
-/* 
-    background-color: #90d5ff;
-
-    border: 1px solid #003859;
-    box-shadow: 0 -5px #003859; */
 }
 
 .header-title { /* basic attributes, values, basic syntax */
+    /* TODO */
     color: #003859;
     font-size: 3rem;
+
+    /* Done */
     padding-bottom: 15px;
 }
 
+/* Done */
 .header-text {
     font-size: 1.2rem;
 }
 
+/* TODO */
 .main-container {
     background-color: #579ec6;
+
     border-radius: 1rem;
     padding: 1.5rem 0.5rem;
 }
 
 /* selecting specific elements with a combination of selectors */
+/* TODO */
 .main-container div {
     margin: 0rem 1rem;
 }
 
+/* Done */
 .location-container {
     margin-top: 2rem;
 }
 
 .location-label {
-    font-weight: bold;
+    /* Done */
     font-size: 1.2rem;
+
+    /* To do */
+    font-weight: bold;
 }
 
+/* TODO */
 .location-input {
     width: 200px;
+
     padding: 6px 12px;
     margin: 4px;
     border-radius: 0.6rem;
 }
 
 .date {
+    /* Done */
     font-size: 1.2rem;
     font-weight: bold;
+
+    /* TODO */
     margin: 1rem 0rem;
 }
 
 /* flex box and grids */
 .forecast-container {
+    /* Done */
     padding: 1rem 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     border: none;
     border-radius: 2rem;
-    
-    /* background-color: #90d5ff; */
+
+    /* TO DO */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 img {
+    /* Done */
     width: 600px;
 
     border: none;
     border-radius: 1rem;
+
+    /* To Do */
     box-shadow: -10px 10px #003859;
 }
 
 .forecast-info {
+    /* Done */
     background-color: #90d5ff;
+
+    /* TODO */
+    width: 100%;
+
     padding: 1.5rem 1rem;
     border-radius: 1.5rem;
-    width: 100%;
+    
     box-shadow: 10px -10px #003859;
 }
 
+/* Done */
 .forecast-info h3 {
     color: #003859;
     font-size: 2rem;
@@ -105,58 +132,74 @@ img {
     margin-bottom: 0.5rem;
 }
 
+/* TO DO */
 .forecast-info ul {
     padding: 0;
 }
 
+
 .forecast-detail {
-    width: 100%;
-    height: auto;
+    /* Done */
     font-size: 1.4rem;
     background-color: #e6f4f1;
 
     border-radius: 0.5rem;
-    list-style-type: none;
-
     padding: 1rem;
     margin-bottom: 1rem;
 
+    /* TO DO */
+    width: 100%;
+    height: auto;
+
+    list-style-type: none;
+
     box-shadow: 5px 5px 10px #888;
+
 }
 
+/* Done */
 .forecast-detail h4 {
     font-weight: bold;
 }
 
+/* Done */
 .forecast-detail span {
     font-weight: lighter;
 }
 
 .forecast-controls {
+    /* Done */
+    padding: 1rem;
+
+    /* TO DO */
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    padding: 1rem;
 }
 
 /* giving multiple different selectors the same attributes */
+/* TODO (add classes) */
 .forecast-controls button, .weather-button {
+    /* Done */
     font-size: 1.2rem;
     background-color: #003859;
     color: white;
+    
+    font-weight: bold;
 
+    /* TO DO */
     border: none;
     padding: 10px 16px;
     border-radius: 1rem;
-    font-weight: bold;
 }
 
+/* TODO */
 .weather-button {
     display: block;
     margin: auto auto;
 }
 
+/* Done */
 footer {
     padding: 20px;
     margin-top: 2rem;
@@ -165,16 +208,19 @@ footer {
     background-color: #90d5ff;
 }
 
+/* TODO */
 footer ul {
     display: flex;
     align-items: center;
     justify-content: center;
+    
     gap: 30px;
 
     list-style-type: none;
 }
 
 /* animations and pseduo-classes */
+/* TODO */
 a {
     color: #003859;
     text-decoration: none;
@@ -182,6 +228,7 @@ a {
     font-size: 0.9rem;
 }
 
+/* TODO */
 a:hover {
     color: deepskyblue;
 }
