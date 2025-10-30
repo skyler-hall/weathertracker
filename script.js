@@ -69,6 +69,7 @@ let day = 1 //index of the "day" we're on for the forecast
 
 let forecastData = null
 
+// Step 0
 document.addEventListener('DOMContentLoaded', () => {
     const getWeatherButton = document.getElementById('weather-button')
     getWeatherButton.addEventListener('click', () => handleSubmit())
@@ -152,7 +153,7 @@ const handleSubmit = () => {
     displayMockForecast(forecast, 1)
 }
 
-// Step 5 - Other handlers for the next and back buttons
+// Step 4 - Other handlers for the next and back buttons
 // just moves through the forecast array
 const handleNext = () => {
     day += 1
@@ -165,7 +166,7 @@ const handlePrev = () => {
 }
 
 //-----------------------------------------------------------------
-// Step 6
+// Step 5
 //notifications
 
 // First:
