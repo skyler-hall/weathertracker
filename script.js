@@ -82,9 +82,47 @@ document.addEventListener('DOMContentLoaded', () => {
     requestNotificationPermission() //ask the user if we can send notifications 
 })
 
-const getForecast = (location) => {
-    let locationKey = location.toLowerCase()
-    let selectedForecast = mockForecast[locationKey]
+const retrieveApiData = async (location) => {
+    const API_ENDPOINT = 'http://api.weatherapi.com/v1/forecast.json'
+    const key = 'key=YOUR_API_KEY_HERE'
+    const q = `q=${location}`
+    const days = 'days=3'
+    const OPTIONS = 'aqi=no&alerts=no'
+    const DAY_FIELDS = 'day_fields=avgtemp_f,avghumidity,condition'
+
+    //const requestUrl = API_ENDPOINT + "?" + key + "&" + q + "&" + days + '&' + options + '&' + DAY_FIELDS
+    const requestUrl = `${API_ENDPOINT}?${key}&${q}&${days}&${OPTIONS}&${DAY_FIELDS}`
+
+    console.log(requestUrl)
+
+    const response = await fetch(requestUrl)
+    const data = await response.json()
+
+    console.log(data)
+
+    const rawForecastData = data.forecast.forecastday //array of forecasts
+
+    const forecast = []
+
+    rawForecastData.forEach((currentDay) => {
+        forecast.push({
+            date: currentDay.date,
+            weather: currentDay.day.condition.text,
+            temp: currentDay.day.avgtemp_f,
+            humidity: currentDay.day.avghumidity,
+            //potentially, add img key here
+        })
+    })
+
+    console.log(forecast)
+    return forecast
+}
+
+const getForecast = (selectedForecast) => {
+    //let locationKey = location.toLowerCase()
+    //let selectedForecast = mockForecast[locationKey]
+    //const selectedForecast = retrieveApiData(location)
+
     forecastData = selectedForecast
 
     let notificationText = ""
@@ -107,7 +145,7 @@ const getForecast = (location) => {
 }
 
 const displayMockForecast = (forecast, index) => {
-    console.log(forecast)
+    console.log('forecast to display',forecast)
     const date = document.getElementById('date-detail')
     const weather = document.getElementById('weather-detail')
     const temp = document.getElementById('temp-detail')
@@ -120,14 +158,15 @@ const displayMockForecast = (forecast, index) => {
     weather.innerText = currForecast?.weather ?? "-"
     temp.innerText = currForecast?.temp ?? "-"
     humidity.innerText = currForecast?.humidity ?? "-"
-    forecastImage.src = `${currForecast?.weather.toLowerCase() ?? "sunny"}.jpg`
+    forecastImage.src = `${currForecast?.weather.toLowerCase() ?? "sunny"}.jpg` //replace with image from forecast data
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     const locationInput = document.getElementById("location-input")
     const location = locationInput.value
     
-    const forecast = getForecast(location)
+    const selectedForecast = await retrieveApiData(location)
+    const forecast = getForecast(selectedForecast)
     displayMockForecast(forecast, 1)
 }
 
