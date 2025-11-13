@@ -1,3 +1,5 @@
+const supabase = window.supabase.createClient('https://gpjbloswksaovpfrlnai.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwamJsb3N3a3Nhb3ZwZnJsbmFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3MTMsImV4cCI6MjA3ODYzMTcxM30.QgxxkXLsZIcatM4NQxybihiFW_xRr6Wwd9wv6d1KrXw')
+
 const mockForecast = {
     miami: [
         {
@@ -79,12 +81,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.getElementById('prev-button')
     prevButton.addEventListener('click', () => handlePrev())
 
+    fetchHistory()
+
     requestNotificationPermission() //ask the user if we can send notifications 
 })
 
-const getForecast = (location) => {
-    let locationKey = location.toLowerCase()
-    let selectedForecast = mockForecast[locationKey]
+const retrieveApidata = async (location) => {
+    const API_ENDPOINT = 'http://api.weatherapi.com/v1/forecast.json'
+    const key = 'key=2bccd56d412d48ab9ae210441251311'
+    const q = `q=${location}`
+    const days = 'days=3'
+    const OPTIONS = 'aqi=no&alerts=no'
+    const DAY_FIELDS = 'day_fields=avgtemp_f,avghumidity,condition'
+
+    const requestUrl = `${API_ENDPOINT}?${key}&${q}&${days}&${OPTIONS}&${DAY_FIELDS}`
+
+    console.log(requestUrl)
+
+    const response = await fetch(requestUrl)
+    const data = await response.json()
+
+    console.log(data)
+
+    const rawForecastData = data.forecast.forecastday
+    
+    const forecast = []
+
+    rawForecastData.forEach((currentDay) => {
+        forecast.push({
+            date: currentDay.date,
+            weather: currentDay.day.condition.text,
+            temp: currentDay.day.avgtemp_f,
+            humidity: currentDay.day.avghumidity,
+        })
+    })
+
+    rawForecastData.forEach(async (currentDay) => {
+        const { error } = await supabase
+        .from('history')
+        .insert({
+            date: currentDay.date,
+            weather: currentDay.day.condition.text,
+            temp: currentDay.day.avgtemp_f,
+            humidity: currentDay.day.avghumidity,
+            location: location,
+        })
+        console.log('insertion error:', error)
+    })
+
+    console.log(forecast)
+    return forecast
+}
+
+const getForecast = (selectedForecast) => {
+    //let locationKey = location.toLowerCase()
+    //let selectedForecast = mockForecast[locationKey]
+
     forecastData = selectedForecast
 
     let notificationText = ""
@@ -120,15 +172,18 @@ const displayMockForecast = (forecast, index) => {
     weather.innerText = currForecast?.weather ?? "-"
     temp.innerText = currForecast?.temp ?? "-"
     humidity.innerText = currForecast?.humidity ?? "-"
-    forecastImage.src = `${currForecast?.weather.toLowerCase() ?? "sunny"}.jpg`
+    forecastImage.src = `${"sunny"}.jpg` //optional make this dynamic
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     const locationInput = document.getElementById("location-input")
     const location = locationInput.value
     
-    const forecast = getForecast(location)
+    const selectedForecast = await retrieveApidata(location)
+    const forecast = getForecast(selectedForecast)
     displayMockForecast(forecast, 1)
+
+    fetchHistory()
 }
 
 // just moves through the forecast array
@@ -140,6 +195,37 @@ const handleNext = () => {
 const handlePrev = () => {
     day -= 1
     displayMockForecast(forecastData, day)
+}
+
+//------------------------
+
+const fetchHistory = async () => {
+
+    const { data, error } = await supabase
+    .from('history')
+    .select()
+
+    console.log(data)
+    console.log(error)
+
+    const history = data.forEach(({ date, weather, temp, humidity, location }) => {
+        const historyItem = document.createElement('div')
+        historyItem.classList.add('forecast-detail')
+        historyItem.style.marginTop = '20px'
+
+        const detailTitle = document.createElement('h4')
+        detailTitle.textContent = 'Details'
+
+        const detailSpan = document.createElement('span')
+        detailSpan.textContent = `Forecast ${date}: ${weather}, ${temp}, ${humidity}, ${location}`
+
+        historyItem.appendChild(detailTitle)
+        historyItem.appendChild(detailSpan)
+
+        const historyContainer = document.getElementById('history-list')
+        historyContainer.appendChild(historyItem)
+    })
+
 }
 
 //-----------------------------------------------------------------
