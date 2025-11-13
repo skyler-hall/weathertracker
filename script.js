@@ -1,3 +1,9 @@
+// Databases - Step 2 (Step 1 is in index.html)
+// Create a single supabase client for interacting with your DB
+//const supabase = window.supabase.createClient('YOUR_URL', 'YOUR_KEY')
+const supabase = window.supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_API_KEY')
+
+
 const mockForecast = {
     miami: [
         {
@@ -62,10 +68,7 @@ const mockForecast = {
 }
 
 
-let day = 1 //index of the "day" we're on for the forecast
-// so page 1 is day 1, aka today
-// page 2 is tomorrow, page 0 is yesterday (if available)
-// so on so forth
+let day = 1
 
 let forecastData = null
 
@@ -79,18 +82,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.getElementById('prev-button')
     prevButton.addEventListener('click', () => handlePrev())
 
+    // Databases - Step 4 Part 2 - Calling our fetch function
+    fetchHistory()
+
     requestNotificationPermission() //ask the user if we can send notifications 
 })
 
+// APIs - Step 1
 const retrieveApiData = async (location) => {
     const API_ENDPOINT = 'http://api.weatherapi.com/v1/forecast.json'
-    const key = 'key=YOUR_API_KEY_HERE'
+    const key = 'key=YOUR_WEATHER_API_KEY'
     const q = `q=${location}`
     const days = 'days=3'
     const OPTIONS = 'aqi=no&alerts=no'
     const DAY_FIELDS = 'day_fields=avgtemp_f,avghumidity,condition'
 
-    //const requestUrl = API_ENDPOINT + "?" + key + "&" + q + "&" + days + '&' + options + '&' + DAY_FIELDS
     const requestUrl = `${API_ENDPOINT}?${key}&${q}&${days}&${OPTIONS}&${DAY_FIELDS}`
 
     console.log(requestUrl)
@@ -110,19 +116,36 @@ const retrieveApiData = async (location) => {
             weather: currentDay.day.condition.text,
             temp: currentDay.day.avgtemp_f,
             humidity: currentDay.day.avghumidity,
-            //potentially, add img key here
         })
+    })
+
+    // Databases - Step 5 - Inserting new records into our table (last step!)
+    rawForecastData.forEach(async (currentDay) => {
+        const { error } = await supabase
+        .from('history')
+        .insert({ 
+            date: currentDay.date,
+            weather: currentDay.day.condition.text,
+            temp: currentDay.day.avgtemp_f,
+            humidity: currentDay.day.avghumidity,
+            location: location,
+        })
+        console.log('insertion error:', error)
     })
 
     console.log(forecast)
     return forecast
 }
 
+
+//APIs - Step 3 - use the API data now!
+// change the parameter to take in the forecast data
 const getForecast = (selectedForecast) => {
     //let locationKey = location.toLowerCase()
     //let selectedForecast = mockForecast[locationKey]
     //const selectedForecast = retrieveApiData(location)
 
+    // set the forecast data and we're good!
     forecastData = selectedForecast
 
     let notificationText = ""
@@ -158,16 +181,21 @@ const displayMockForecast = (forecast, index) => {
     weather.innerText = currForecast?.weather ?? "-"
     temp.innerText = currForecast?.temp ?? "-"
     humidity.innerText = currForecast?.humidity ?? "-"
-    forecastImage.src = `${currForecast?.weather.toLowerCase() ?? "sunny"}.jpg` //replace with image from forecast data
+    forecastImage.src = `${"sunny"}.jpg` // APIs - optional (last step) - just get rid of the dynamic url
 }
 
 const handleSubmit = async () => {
     const locationInput = document.getElementById("location-input")
     const location = locationInput.value
     
+    // APIS - Step 2 - call the retrieval function with the location
     const selectedForecast = await retrieveApiData(location)
     const forecast = getForecast(selectedForecast)
     displayMockForecast(forecast, 1)
+    // ---------------------------------------------------------
+
+    // Databases - Step 4 Part 1 - Calling our fetch 
+    fetchHistory()
 }
 
 // just moves through the forecast array
@@ -179,6 +207,45 @@ const handleNext = () => {
 const handlePrev = () => {
     day -= 1
     displayMockForecast(forecastData, day)
+}
+
+//-----------------------------------------------------------------
+//DB controls
+
+// Databases - Step 3 - Fetching from our table!
+const fetchHistory = async () => {
+
+    // Supabase is pretty simple, we can use their api to write up queries
+    const { data, error } = await supabase
+    .from('history')
+    .select()
+
+    console.log(data)
+    console.log(error)
+
+    const history = data.forEach(({ date, weather, temp, humidity, location }) => {
+        // Create a div for each history item
+        const historyItem = document.createElement("div");
+        historyItem.classList.add('forecast-detail')
+        historyItem.style.marginTop = '20px'; 
+
+        // Create h4 and span
+        const detailTitle = document.createElement("h4");
+        detailTitle.textContent = "Details";
+
+        const detailSpan = document.createElement("span");
+        detailSpan.textContent = `Forecast ${date}: ${weather}, ${temp}, ${humidity}, ${location}`;
+
+        // Append them to the div
+        historyItem.appendChild(detailTitle);
+        historyItem.appendChild(detailSpan);
+
+        // append the whole structure to the history container
+        const historyContainer = document.getElementById('history-list')
+        historyContainer.appendChild(historyItem);
+
+    })
+
 }
 
 //-----------------------------------------------------------------
